@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clinical Note Detector</title>
+    <style>
+        body {
+            font-family: 'Poppins', 'Arial', sans-serif;
+            background: linear-gradient(to right, #74ebd5, #acb6e5);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: #ffffff;
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 32px;
+            font-weight: 600;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            resize: none;
+            font-size: 16px;
+            margin-bottom: 20px;
+            background: #f9f9f9;
+            transition: border 0.3s ease;
+        }
+        
+        textarea:focus {
+            border-color: #007bff;
+            outline: none;
+            background: #fff;
+        }
+        
+        button {
+            padding: 14px 20px;
+            background: #007bff;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        .result {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .percentages p {
+            font-size: 18px;
+            color: #555;
+            margin: 8px 0;
+        }
+        
+        .note-box {
+            background: #e9f7ef;
+            border-left: 6px solid #28a745;
+            padding: 20px;
+            margin-top: 20px;
+            font-size: 16px;
+            white-space: pre-wrap;
+            border-radius: 8px;
+            line-height: 1.6;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            margin-top: 20px;
+            background: #28a745;
+            color: white;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+        
+        .download-btn:hover {
+            background: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Clinical Note Detector</h1>
+        <form method="POST">
+            <textarea name="input_text" placeholder="Enter your text here..." required></textarea>
+            <button type="submit">Check</button>
+        </form>
+
+        {% if clinical_percent is not none %}
+        <div class="result">
+            <h2>Results:</h2>
+            <div class="percentages">
+                <p><strong>Clinical Note Probability:</strong> {{ clinical_percent }}%</p>
+                <p><strong>Non-Clinical Note Probability:</strong> {{ non_clinical_percent }}%</p>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if show_download %}
+        <div class="note-box">
+            <h3>Input Text:</h3>
+            <p>{{ input_text }}</p>
+        </div>
+        <form method="POST" action="/download">
+            <input type="hidden" name="input_text" value="{{ input_text }}">
+            <button class="download-btn" type="submit">Download as PDF</button>
+        </form>
+        {% endif %}
+    </div>
+</body>
+</html>
